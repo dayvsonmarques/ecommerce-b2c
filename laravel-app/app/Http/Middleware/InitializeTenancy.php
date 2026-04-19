@@ -18,6 +18,11 @@ class InitializeTenancy
 
     public function handle(Request $request, Closure $next): Response
     {
+        // Em desenvolvimento com SQLite, pula a resolução de tenant
+        if (config('database.default') === 'sqlite') {
+            return $next($request);
+        }
+
         $tenant = $this->resolveTenant($request);
 
         if ($tenant === null) {
