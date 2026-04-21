@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\V1\AddressController;
 use App\Http\Controllers\Api\V1\Admin\AdminOrderController;
+use App\Http\Controllers\Api\V1\Admin\AdminPageController;
 use App\Http\Controllers\Api\V1\Admin\AdminProductController;
 use App\Http\Controllers\Api\V1\Admin\AdminUserController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CartController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\OrderController;
+use App\Http\Controllers\Api\V1\PageController;
 use App\Http\Controllers\Api\V1\PaymentController;
 use App\Http\Controllers\Api\V1\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +36,12 @@ Route::prefix('v1')->middleware(['api', 'tenant'])->group(function () {
     Route::get('products',                         [ProductController::class, 'index']);
     Route::get('products/{product}',               [ProductController::class, 'show']);
     Route::get('products/{product}/related',       [ProductController::class, 'related']);
+
+    // =========================================================================
+    // PÁGINAS CMS — público (carregadas no footer/storefront)
+    // =========================================================================
+    Route::get('pages',         [PageController::class, 'index']);
+    Route::get('pages/{slug}',  [PageController::class, 'show']);
 
     // =========================================================================
     // WEBHOOK (público com validação de assinatura no controller)
@@ -101,6 +109,9 @@ Route::prefix('v1')->middleware(['api', 'tenant'])->group(function () {
 
             // Relatórios
             Route::get('reports/summary',               [AdminOrderController::class, 'reportSummary']);
+
+            // CMS — Páginas
+            Route::apiResource('pages', AdminPageController::class);
         });
     });
 });

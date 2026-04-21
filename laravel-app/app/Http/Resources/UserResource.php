@@ -17,6 +17,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'cpf' => $this->when($request->user()?->id === $this->id, $this->cpf),
+            'is_admin' => $this->is_admin,
             'is_active' => $this->is_active,
             'email_verified_at' => $this->email_verified_at,
             'created_at' => $this->created_at,

@@ -19,7 +19,9 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //
+        // Bindings padrão para o contexto de tenancy — sobrescritos pelo middleware em produção
+        app()->instance('currentTenant', null);
+        app()->instance('currentBranch', null);
     }
 
     public function boot(): void

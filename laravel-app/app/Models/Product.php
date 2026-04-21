@@ -25,6 +25,7 @@ class Product extends Model
         'sku',
         'quantity',
         'min_quantity_alert',
+        'image_url',
         'is_active',
     ];
 

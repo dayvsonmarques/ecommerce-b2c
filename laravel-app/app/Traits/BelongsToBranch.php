@@ -17,7 +17,7 @@ trait BelongsToBranch
     public static function bootBelongsToBranch(): void
     {
         static::addGlobalScope('branch', function (Builder $query): void {
-            $branch = app('currentBranch');
+            $branch = app()->bound('currentBranch') ? app('currentBranch') : null;
 
             if ($branch instanceof Branch) {
                 $query->where($query->getModel()->getTable() . '.branch_id', $branch->id);
@@ -26,7 +26,7 @@ trait BelongsToBranch
 
         static::creating(function ($model): void {
             if ($model->branch_id === null) {
-                $branch = app('currentBranch');
+                $branch = app()->bound('currentBranch') ? app('currentBranch') : null;
                 if ($branch instanceof Branch) {
                     $model->branch_id = $branch->id;
                 }
