@@ -168,6 +168,11 @@ class CartService
         return max(round($total, 2), 0.00);
     }
 
+    public function calculateShippingForPostalCode(string $postalCode): float
+    {
+        return $this->calculateShippingRate($postalCode);
+    }
+
     private function calculateShippingRate(string $postalCode): float
     {
         $digits = preg_replace('/\D+/', '', $postalCode);

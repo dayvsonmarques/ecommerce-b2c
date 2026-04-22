@@ -78,7 +78,7 @@ export const cartApi = {
   applyCoupon: (coupon_code: string) =>
     api.post<{ data: Cart; message: string }>("/cart/coupon", { coupon_code }),
   estimateShipping: (postal_code: string) =>
-    api.post<{ data: { shipping_cost: string } }>("/cart/shipping", { postal_code }),
+    api.post<{ data: { shipping_cost: string } }>("/shipping/estimate", { postal_code }),
 };
 
 // ─── Orders ──────────────────────────────────────────────────────────────────

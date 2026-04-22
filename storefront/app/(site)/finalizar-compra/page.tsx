@@ -26,7 +26,7 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    if (!user) { router.push("/auth/entrar"); return; }
+    if (!user) { router.push("/auth/entrar?redirect=/finalizar-compra"); return; }
     addressesApi.list().then((r) => {
       setAddresses(r.data);
       const def = r.data.find((a) => a.is_default && a.type === "shipping");

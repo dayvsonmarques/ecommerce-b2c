@@ -21,18 +21,6 @@ export default function CartPage() {
   const [shipping, setShipping] = useState<string | null>(null);
   const [applyingCoupon, setApplyingCoupon] = useState(false);
 
-  if (!user) {
-    return (
-      <main className="mx-auto max-w-c-1280 px-6 pb-20 pt-28 text-center">
-        <h1 className="mb-4 text-3xl font-bold text-black dark:text-white">Carrinho</h1>
-        <p className="mb-6 text-waterloo dark:text-manatee">Faça login para ver seu carrinho.</p>
-        <Link href="/auth/entrar" className="rounded-full bg-primary px-6 py-3 text-white hover:bg-opacity-90">
-          Entrar
-        </Link>
-      </main>
-    );
-  }
-
   if (loading) {
     return <main className="pt-28 text-center text-waterloo">Carregando...</main>;
   }
@@ -116,32 +104,39 @@ export default function CartPage() {
               </div>
             </div>
 
-            {/* Coupon */}
-            {!cart.coupon_code && (
-              <div className="mt-4 flex gap-2">
-                <input
-                  type="text" value={coupon} onChange={(e) => setCoupon(e.target.value.toUpperCase())}
-                  placeholder="CUPOM"
-                  className="flex-1 rounded-lg border border-stroke bg-transparent px-3 py-2 text-sm uppercase outline-none focus:border-primary dark:border-strokedark dark:text-white"
-                />
-                <button onClick={handleApplyCoupon} disabled={applyingCoupon} className="rounded-lg bg-primary px-3 py-2 text-sm text-white hover:bg-opacity-90 disabled:opacity-60">OK</button>
-              </div>
+            {/* Cupom — apenas para usuários logados */}
+            {user && (
+              <>
+                {!cart.coupon_code && (
+                  <div className="mt-4 flex gap-2">
+                    <input
+                      type="text" value={coupon} onChange={(e) => setCoupon(e.target.value.toUpperCase())}
+                      placeholder="CUPOM"
+                      className="flex-1 rounded-lg border border-stroke bg-transparent px-3 py-2 text-sm uppercase outline-none focus:border-primary dark:border-strokedark dark:text-white"
+                    />
+                    <button onClick={handleApplyCoupon} disabled={applyingCoupon} className="rounded-lg bg-primary px-3 py-2 text-sm text-white hover:bg-opacity-90 disabled:opacity-60">OK</button>
+                  </div>
+                )}
+                {cart.coupon_code && <p className="mt-2 text-xs text-green-600">✓ Cupom {cart.coupon_code} aplicado</p>}
+              </>
             )}
-            {cart.coupon_code && <p className="mt-2 text-xs text-green-600">✓ Cupom {cart.coupon_code} aplicado</p>}
 
-            {/* Shipping estimate */}
+            {/* Cálculo de frete — disponível para todos */}
             <div className="mt-4 flex gap-2">
               <input
                 type="text" value={postalCode} onChange={(e) => setPostalCode(e.target.value)}
                 placeholder="CEP"
-                className="flex-1 rounded-lg border border-stroke bg-transparent px-3 py-2 text-sm outline-none focus:border-primary dark:border-strokedark dark:text-white"
+                className="flex-1 rounded-lg border border-stroke bg-transparent px-3 py-2 text-sm uppercase outline-none focus:border-primary dark:border-strokedark dark:text-white"
               />
               <button onClick={handleEstimateShipping} className="rounded-lg bg-gray-100 px-3 py-2 text-sm hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600">Calcular</button>
             </div>
             {shipping && <p className="mt-1 text-xs text-waterloo">Frete estimado: {fmt(shipping)}</p>}
 
-            <button onClick={() => router.push("/checkout")} className="mt-6 w-full rounded-full bg-primary py-3 font-medium text-white transition hover:bg-opacity-90">
-              Finalizar Compra →
+            <button
+              onClick={() => user ? router.push("/finalizar-compra") : router.push("/auth/entrar?redirect=/finalizar-compra")}
+              className="mt-6 w-full rounded-full bg-primary py-3 font-medium text-white transition hover:bg-opacity-90"
+            >
+              {user ? "Finalizar Compra →" : "Entrar para finalizar →"}
             </button>
           </div>
 

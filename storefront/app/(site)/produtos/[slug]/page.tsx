@@ -35,7 +35,7 @@ export default function ProductDetailPage() {
     if (!product) return;
     setAdding(true);
     try {
-      await addItem(product.id, quantity, selectedSku?.id);
+      await addItem(product.id, quantity, selectedSku?.id, product);
       toast.success("Adicionado ao carrinho!");
     } catch {
       toast.error("Faça login para adicionar ao carrinho.");

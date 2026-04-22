@@ -25,10 +25,10 @@ export default function HomeClient() {
 
   const handleAdd = async (product: Product) => {
     try {
-      await addItem(product.id, 1);
+      await addItem(product.id, 1, undefined, product);
       toast.success(`${product.name} adicionado ao carrinho!`);
     } catch {
-      toast.error("Faça login para adicionar ao carrinho.");
+      toast.error("Erro ao adicionar ao carrinho.");
     }
   };
 

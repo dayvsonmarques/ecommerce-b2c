@@ -35,15 +35,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
     const { token, user } = await authApi.login(email, password);
     localStorage.setItem("token", token);
     setUser(user);
-    router.push("/conta/pedidos");
-  }, [router]);
+  }, []);
 
   const register = useCallback(async (data: RegisterData) => {
     const { token, user } = await authApi.register(data);
     localStorage.setItem("token", token);
     setUser(user);
-    router.push("/");
-  }, [router]);
+  }, []);
 
   const logout = useCallback(async () => {
     try { await authApi.logout(); } catch {}

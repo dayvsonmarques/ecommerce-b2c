@@ -49,6 +49,11 @@ Route::prefix('v1')->middleware(['api', 'tenant'])->group(function () {
     Route::post('webhooks/payment', [PaymentController::class, 'webhook']);
 
     // =========================================================================
+    // ESTIMATIVA DE FRETE — público (apenas CEP, sem autenticação necessária)
+    // =========================================================================
+    Route::post('shipping/estimate', [CartController::class, 'estimateShipping']);
+
+    // =========================================================================
     // ROTAS PROTEGIDAS — Sanctum
     // =========================================================================
     Route::middleware('auth:sanctum')->group(function () {

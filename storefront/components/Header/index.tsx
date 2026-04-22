@@ -156,7 +156,7 @@ const Header = () => {
           <div className="mt-7 flex items-center gap-6 xl:mt-0">
             <ThemeToggler />
 
-            <Link href="/cart" className="relative" aria-label="Carrinho de compras">
+            <Link href="/carrinho" className="relative" aria-label="Carrinho de compras">
               <svg
                 className="h-6 w-6 fill-current text-dark dark:text-white"
                 viewBox="0 0 24 24"

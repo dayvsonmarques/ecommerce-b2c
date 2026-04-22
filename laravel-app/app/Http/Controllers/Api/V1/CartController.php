@@ -123,18 +123,13 @@ class CartController
     }
 
     /**
-     * POST /api/v1/cart/shipping
+     * POST /api/v1/shipping/estimate  (público)
+     * POST /api/v1/cart/shipping      (autenticado — mantido para compatibilidade, também salva no carrinho)
      */
     public function estimateShipping(EstimateShippingRequest $request): JsonResponse
     {
-        try {
-            $shippingCost = $this->cartService->estimateShippingCost(
-                $request->user()->id,
-                (string) $request->validated('postal_code'),
-            );
-        } catch (RuntimeException $e) {
-            return response()->json(['message' => $e->getMessage()], 422);
-        }
+        $postalCode   = (string) $request->validated('postal_code');
+        $shippingCost = $this->cartService->calculateShippingForPostalCode($postalCode);
 
         return response()->json([
             'data' => ['shipping_cost' => $shippingCost],
