@@ -61,4 +61,15 @@ export const NAV_DATA: NavSection[] = [
       },
     ],
   },
+  {
+    label: "CONFIGURAÇÕES",
+    items: [
+      {
+        title: "Loja",
+        url: "/configuracoes/loja",
+        icon: Icons.SettingsIcon,
+        items: [],
+      },
+    ],
+  },
 ];

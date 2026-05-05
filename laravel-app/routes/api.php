@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\AddressController;
 use App\Http\Controllers\Api\V1\Admin\AdminOrderController;
 use App\Http\Controllers\Api\V1\Admin\AdminPageController;
 use App\Http\Controllers\Api\V1\Admin\AdminProductController;
+use App\Http\Controllers\Api\V1\Admin\AdminStoreSettingController;
 use App\Http\Controllers\Api\V1\Admin\AdminUserController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CartController;
@@ -36,6 +37,11 @@ Route::prefix('v1')->middleware(['api', 'tenant'])->group(function () {
     Route::get('products',                         [ProductController::class, 'index']);
     Route::get('products/{product}',               [ProductController::class, 'show']);
     Route::get('products/{product}/related',       [ProductController::class, 'related']);
+
+    // =========================================================================
+    // CONFIGURAÇÕES DA LOJA — público (logo, nome, descrição)
+    // =========================================================================
+    Route::get('store/settings', [AdminStoreSettingController::class, 'show']);
 
     // =========================================================================
     // PÁGINAS CMS — público (carregadas no footer/storefront)
@@ -117,6 +123,9 @@ Route::prefix('v1')->middleware(['api', 'tenant'])->group(function () {
 
             // CMS — Páginas
             Route::apiResource('pages', AdminPageController::class);
+
+            // Configurações da loja
+            Route::put('store/settings', [AdminStoreSettingController::class, 'update']);
         });
     });
 });

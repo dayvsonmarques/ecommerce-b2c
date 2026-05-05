@@ -9,6 +9,7 @@ use App\Models\CartItem;
 use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\ProductSku;
+use App\Models\StoreSetting;
 use App\Repositories\CartRepository;
 use RuntimeException;
 
@@ -170,7 +171,49 @@ class CartService
 
     public function calculateShippingForPostalCode(string $postalCode): float
     {
+        $settings = StoreSetting::instance();
+
+        if ($settings->shipping_coverage === 'state') {
+            $storeState = strtoupper((string) $settings->address_state);
+            $destState  = $this->postalCodeToState($postalCode);
+            if ($storeState && $destState && $storeState !== $destState) {
+                throw new RuntimeException("Esta loja realiza entregas apenas para o estado de {$storeState}.");
+            }
+        }
+
         return $this->calculateShippingRate($postalCode);
+    }
+
+    private function postalCodeToState(string $postalCode): string
+    {
+        $prefix = (int) substr(preg_replace('/\D+/', '', $postalCode), 0, 3);
+
+        return match (true) {
+            $prefix <= 199 => 'SP',
+            $prefix <= 299 => 'SP',
+            $prefix <= 289 => 'RJ',
+            $prefix <= 299 => 'ES',
+            $prefix <= 399 => 'MG',
+            $prefix <= 489 => 'BA',
+            $prefix <= 499 => 'SE',
+            $prefix <= 569 => 'PE',
+            $prefix <= 579 => 'AL',
+            $prefix <= 589 => 'PB',
+            $prefix <= 599 => 'RN',
+            $prefix <= 639 => 'CE',
+            $prefix <= 649 => 'PI',
+            $prefix <= 659 => 'MA',
+            $prefix <= 689 => 'PA',
+            $prefix <= 699 => 'AM',
+            $prefix <= 729 => 'DF',
+            $prefix <= 769 => 'GO',
+            $prefix <= 779 => 'TO',
+            $prefix <= 789 => 'MT',
+            $prefix <= 799 => 'MS',
+            $prefix <= 879 => 'PR',
+            $prefix <= 899 => 'SC',
+            default        => 'RS',
+        };
     }
 
     private function calculateShippingRate(string $postalCode): float

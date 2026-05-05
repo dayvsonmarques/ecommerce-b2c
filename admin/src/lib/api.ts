@@ -96,7 +96,29 @@ export const usersApi = {
     api.patch<{ data: AdminUser; message: string }>(`/admin/users/${id}/toggle-active`),
 };
 
+// ─── Store Settings ──────────────────────────────────────────────────────────
+export const storeSettingsApi = {
+  get: () => api.get<{ data: StoreSettings }>("/store/settings"),
+  update: (data: Partial<StoreSettings>) =>
+    api.put<{ data: StoreSettings; message: string }>("/admin/store/settings", data),
+};
+
 // ─── Types ───────────────────────────────────────────────────────────────────
+export interface StoreSettings {
+  id: number;
+  store_name: string;
+  store_description: string | null;
+  logo_url: string | null;
+  address_street: string | null;
+  address_number: string | null;
+  address_complement: string | null;
+  address_neighborhood: string | null;
+  address_city: string | null;
+  address_state: string | null;
+  address_postal_code: string | null;
+  shipping_coverage: "state" | "national" | "international";
+}
+
 export interface AdminUser {
   id: number;
   name: string;
